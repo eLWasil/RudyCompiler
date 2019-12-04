@@ -19,7 +19,7 @@ int yylineno;
 				return '=';
 			}
 [1-9][0-9]*		{
-				fprintf(yyout, "liczba\n");
+				//fprintf(yyout, "liczba\n");
 				yylval.ival = atoi(yytext);
 				return LC;
 			}	
@@ -30,7 +30,7 @@ int yylineno;
 			}
 [1-9]+[.]{2}		{fprintf(yyout, "dziwne\n");}
 \ |\t			{;}
-\n			{yylineno++;}
+\n			{yylineno++;return NEWLINE;}
 
 .			{}
 %%

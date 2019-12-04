@@ -13,6 +13,7 @@ int yylineno;
 {char *text;
 int	ival;};
 %token <text> ID
+%token <text> NEWLINE
 %token <ival> LC
 %left '+' '-'
 %left '*' '/'
@@ -23,10 +24,22 @@ skladnik
 	|skladnik '/' czynnik	{printf("skladnik z / \n");}
 	|czynnik		{printf("skladnik pojedynczy \n");}
 	;
+strona
+	: lista lista { printf("|strona++|\n"); }
+	| lista { printf("|strona+|\n"); }
+
 Commented */
+lista
+	: line line { printf("|lista++|\n"); }
+	| line {printf("|lista+|\n");}
+
+line
+	:czynnik NEWLINE {printf("|czynnik NEWLINE|\n");}
+	| NEWLINE {printf("|czynnik NEWLINE|\n");}
+
 czynnik
-	:ID			{printf("czynnik znakowy\n");} 
-	|LC			{printf("czynnik liczbowy\n");}
+	:ID			{printf("ID\n");} 
+	|LC			{printf("LC\n");} 
 	;
 %%
 void yyerror(char *msg){}
