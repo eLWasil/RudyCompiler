@@ -11,8 +11,8 @@ lex.yy.c: maine.l
 exe: lex.yy.c maine.def.tab.c
 	$(CC) lex.yy.c -o rudy
 
-run: rudy.exe test.txt
-	./rudy.exe < test.txt
+run: rudy.exe input.txt
+	./rudy.exe < input.txt
 	
 clean: lex.yy.c maine.def.tab.c
 	rm lex.yy.c maine.def.tab.c

@@ -31,5 +31,6 @@ int yylineno;
 [1-9]+[.]{2}		{fprintf(yyout, "dziwne\n");}
 \ |\t			{;}
 \n			{yylineno++;}
+
 .			{}
 %%
