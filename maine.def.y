@@ -13,7 +13,7 @@ int yylineno;
 {char *text;
 int	ival;};
 %token <text> ID
-%token <text> NEWLINE
+%token <text> NEWLINE PARAGRAPH LEX_EOF
 %token <ival> LC
 %left '+' '-'
 %left '*' '/'
@@ -29,12 +29,13 @@ strona
 	| lista { printf("|strona+|\n"); }
 
 Commented */
+
 lista
-	: line line { printf("|lista++|\n"); }
-	| line {printf("|lista+|\n");}
+	: line { printf("|lista+|\n"); }
+	| lista line {printf("|lista++|\n");}
 
 line
-	:czynnik NEWLINE {printf("|czynnik NEWLINE|\n");}
+	: czynnik NEWLINE {printf("|czynnik NEWLINE|\n");}
 	| NEWLINE {printf("|czynnik NEWLINE|\n");}
 
 czynnik

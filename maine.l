@@ -30,7 +30,9 @@ int yylineno;
 			}
 [1-9]+[.]{2}		{fprintf(yyout, "dziwne\n");}
 \ |\t			{;}
-\n			{yylineno++;return NEWLINE;}
+"\n"     { return NEWLINE; }
+"\n"+    { return PARAGRAPH; }
+<<EOF>>  { return LEX_EOF; }
 
 .			{}
 %%
