@@ -1,8 +1,5 @@
-//set a = 3;
-//set b = 6;
-//if (a > b) {
-//	out("a > b");
-//}
-//else if (a < b) {
-//	out("a < b");
-//}
+set a = 3;
+set b = 4;
+c = a + b;
+// tests up
+// test 2
