@@ -7,45 +7,111 @@
 int yylex();
 void yyerror(char *msg);
 
-int yylineno;
+int yylineno = 1;
 %}
 %union 
 {char *text;
 int	ival;};
-%token <text> ID
 %token <text> NEWLINE PARAGRAPH LEX_EOF
-%token <ival> LC
+%token <text> SET
+%token <text> STR UNKNOWN
+%token <text> COMMENTLINE
+%token <ival> INT
+
+%%
+/* Commented -->
 %left '+' '-'
 %left '*' '/'
-%%
-/* Commented
-skladnik
-	:skladnik '*' czynnik	{printf("skladnik z * \n");}
-	|skladnik '/' czynnik	{printf("skladnik z / \n");}
-	|czynnik		{printf("skladnik pojedynczy \n");}
-	;
-strona
-	: lista lista { printf("|strona++|\n"); }
-	| lista { printf("|strona+|\n"); }
 
-Commented */
+forloop 
+	: FOR { printf("{FOR}\n"); }
+	| FOR line { printf("{FOR line}\n"); }
 
-lista
-	: line { printf("|lista+|\n"); }
-	| lista line {printf("|lista++|\n");}
+script
+	: fullline { printf(""); }
+	| script fullline { printf(""); yylineno++; }
+
+fullline
+	: line newline { printf("<<\n"); }
+	| op_set newline { printf("op_set ';'"); }
+	| ignore line newline { printf("<<\n"); }
+
+newline
+	: NEWLINE {}
+	| ';' {}
+	| newline NEWLINE {}
+
+ignore
+	: COMMENTLINE {printf("COMMENTLINE>> ");}
 
 line
-	: czynnik NEWLINE {printf("|czynnik NEWLINE|\n");}
-	| NEWLINE {printf("|czynnik NEWLINE|\n");}
+	: czynnik {printf("");}
+	| line czynnik {  }
 
+	
 czynnik
-	:ID			{printf("ID\n");} 
-	|LC			{printf("LC\n");} 
+	:STR			{printf("STR");} 
+	|INT			{printf("INT");}
+	|UNKNOWN		{printf("#");}
+	|' ' 			{printf(" ");}
 	;
+	
+set_variable
+	: op_set INT 	{ printf("set_variable"); }
+
+	
+set_variable 	{}
+<-- Commented */
+
+/* <-- TOKENS --> */
+read_all
+	: line 			{ }
+	| read_all line { }
+
+line
+	: ignore 		{}
+	| value 		{}
+	| identity		{}
+	| op_set		{}
+	| line endl		{ 
+		//printf(" \r\t\t\t\t\t\t >> %s \n", yytext);
+		printf("\n");
+	}
+
+op_set
+	: SET ' ' identity ' ' {
+		//printf("op_set_1('%s')", yytext);
+	}
+	| op_set endl {
+		printf("op_set_2('%s')", yytext);
+	} 
+	| op_set '=' ' ' value {
+		printf("op_set_3('%s')", yytext);
+	}
+	
+value
+	: INT 			{printf("INT");}
+
+identity
+	: STR			{printf("STR");}
+	
+ignore
+	: ' ' 			{printf(" ");}
+	| UNKNOWN		{printf("#");}
+	| COMMENTLINE	{printf("### %s ###", yytext);}
+	
+endl
+	: NEWLINE 		{}
+	| ';' 			{}
+	| endl NEWLINE 	{}
+	| endl ';' 		{}
 %%
+/* <-- FUNCTIONS --> */
 void yyerror(char *msg){}
 int yywrap (void) { return 1; }
 
+
+/* <-- MAIN --> */
 int main(int argc, char *argv[])
 {
 	printf("Progrum run:\n");

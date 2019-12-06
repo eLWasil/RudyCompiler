@@ -9,10 +9,10 @@ lex.yy.c: maine.l
 	$(LEX) maine.l
 
 exe: lex.yy.c maine.def.tab.c
-	$(CC) lex.yy.c -o rudy
+	$(CC) lex.yy.c -o rudyCompiler
 
-run: rudy.exe input.txt
-	./rudy.exe < input.txt
+run: rudyCompiler.exe input.txt
+	./rudyCompiler.exe < input.txt
 	
 clean: lex.yy.c maine.def.tab.c
 	rm lex.yy.c maine.def.tab.c

@@ -4,35 +4,35 @@
 #include "maine.def.tab.c"
 #define INFILE_ERROR 1
 #define OUTFILE_ERROR 2
+
 int yylineno;
+void say(char *msg);
 %}
 %%
-\+			{fprintf(yyout, "+\n");return '+';} 
-\*			{fprintf(yyout, "*\n");return '*';}
-\(			{fprintf(yyout, "(\n");return '(';}
-\)			{fprintf(yyout, ")\n");return ')';}
-\/			{fprintf(yyout, "/\n");return '/';}
-\-			{fprintf(yyout, "-\n");return '-';}
-\^			{fprintf(yyout, "^\n");return '^';}
-\=			{
-				fprintf(yyout, "^\n");
-				return '=';
-			}
-[1-9][0-9]*		{
-				//fprintf(yyout, "liczba\n");
-				yylval.ival = atoi(yytext);
-				return LC;
-			}	
-[A-Za-z_][A-Za-z0-9_]*	{
-				fprintf(yyout, "nazwa\n");
-				yylval.text = strdup(yytext);
-				return ID;
-			}
-[1-9]+[.]{2}		{fprintf(yyout, "dziwne\n");}
-\ |\t			{;}
-"\n"     { return NEWLINE; }
-"\n"+    { return PARAGRAPH; }
-<<EOF>>  { return LEX_EOF; }
+"//"+.* { return COMMENTLINE; }
+\= {
+	return '=';
+}
 
-.			{}
+"set" {
+	return SET;
+}
+
+[1-9][0-9]*		{
+				yylval.ival = atoi(yytext);
+				return INT;
+				}	
+[A-Za-z][A-Za-z0-9_]*	{
+					yylval.text = strdup(yytext);
+					return STR;
+					}
+"\n"    { return NEWLINE; }
+";"    	{ return ';'; }
+"\n"+   { return PARAGRAPH; }
+<<EOF>> { return LEX_EOF; }
+" " 	{ return ' '; }
+.		{ return UNKNOWN; }
 %%
+void say(char *msg) {
+	fprintf(yyout, msg);
+}
