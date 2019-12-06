@@ -1,21 +1,26 @@
 CC=gcc
+CPP=g++
 LEX=flex
 YACC=bison
 LD=gcc
 
-all: lex.yy.c tokens exe run clean
+all: maine.l 
 
-lex.yy.c: maine.l
+maine.l: maine.l
 	$(LEX) maine.l
 
-exe: lex.yy.c maine.def.tab.c
+exe: lex.yy.c
 	$(CC) lex.yy.c -o rudyCompiler
 
 run: rudyCompiler.exe input.txt
 	./rudyCompiler.exe < input.txt
 	
-clean: lex.yy.c maine.def.tab.c
-	rm lex.yy.c maine.def.tab.c
+clean: lex.yy.c maine.def.tab.cc
+	rm lex.yy.c maine.def.tab.cc
 	
-tokens: maine.def.y
-	$(YACC) maine.def.y
+def.tab.yy: maine.def.yy
+	$(YACC) maine.def.yy
+	
+def.tab.cc:
+	$(CPP) maine.def.tab.cc -o
+	

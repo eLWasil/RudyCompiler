@@ -1,7 +1,7 @@
 %{
 #include <stdlib.h>
 #include <string.h>
-#include "maine.def.tab.c"
+#include "maine.def.tab.cc"
 #define INFILE_ERROR 1
 #define OUTFILE_ERROR 2
 
