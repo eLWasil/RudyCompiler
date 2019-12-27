@@ -13,6 +13,9 @@ void say(char *msg);
 \= {
 	return '=';
 }
+\+ {
+	return '+';
+}
 
 "set" {
 	return SET;
@@ -30,7 +33,7 @@ void say(char *msg);
 ";"    	{ return ';'; }
 "\n"+   { return PARAGRAPH; }
 <<EOF>> { return LEX_EOF; }
-" " 	{ return ' '; }
+" "+ 	{ return ' '; }
 .		{ return UNKNOWN; }
 %%
 void say(char *msg) {
