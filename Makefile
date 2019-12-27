@@ -10,7 +10,7 @@ maine.l: maine.l
 	$(LEX) maine.l
 
 exe: lex.yy.c
-	$(CC) lex.yy.c -o rudyCompiler
+	$(CPP) lex.yy.c -o rudyCompiler
 
 run: rudyCompiler.exe input.txt
 	./rudyCompiler.exe < input.txt
