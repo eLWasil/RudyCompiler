@@ -2,18 +2,23 @@
 #include <string.h>
 #include <stdio.h>
 #include <iostream>
+#include <stack>
+#include "Variable.h"
+#include "VariableManager.h"
 #define MAX_VARIABLE_LENGTH 100
 using namespace std;
 
-extern int yylex();
+extern "C" int yylex();
 extern void yyerror(const char* msg);
 extern char* yytext;
 
 int getInt(const char* name);
 void saveInt(const char* name, int value);
 
-int yylineno = 1;
+//int yylineno = 1;
 
+stack <int> stackInt;
+stack <string> stackString; 
 int 	arrInt[20];
 int		idxInt = 0;
 char 	*arrChar[20];
@@ -56,28 +61,46 @@ line
 
 op_set
 	: SET whitespace identity {
-		//text = (char *)malloc(100);
-		char* text = new char(MAX_VARIABLE_LENGTH);
-		strcpy(text, yytext);
+		stackString.push(yytext);
 	}
-	| op_set whitespace '=' whitespace value {
-		ival = atoi(yytext);
-		//printf("<'%s' = '%d'>", text, ival);
-		cout << text << " " << ival << endl;
-		saveInt(text, ival);
+	| op_set op_assign value {
 		
-		int valueOfB = getInt((char*)"b");
-		printf("valueOfB = %d", valueOfB)
+		cout << stackString.top() << " = " << yytext;
+	}
+		
+op_hset
+	: identity op_assign { 
+		printf("<op_hset_1('%s')>", yytext);	
+	}
+	| op_hset expr { 
+		printf("<op_hset_2('%s')>", yytext);	
 	}
 	
+expr
+	: identity op_add identity	{
+		//printf("<%s, %s>", text, yytext);
+	}
+	
+op_assign
+	: '=' 						{printf("");}
+	| op_assign whitespace	 	{printf("");}
+	| whitespace op_assign 	 	{printf("");}
+	
+op_add
+	: '+' 						{printf("");}
+	| whitespace '+' whitespace {printf("");}
+
 value
 	: INT 			{
-		//printf("INT");
+		ival = atoi(yytext);
+		stackInt.push(ival);
+		cout << "INT(" << ival << ")";
+		
 	}
 
 identity
 	: STR			{
-		//printf("STR");
+		//cout << "STR";
 	}
 	
 ignore
@@ -92,45 +115,61 @@ whitespace
 
 endl
 	: NEWLINE 		{}
-	| ';' 			{}
+	| ';' 			{printf(";");}
 	| endl NEWLINE 	{}
 	| endl ';' 		{}
 %%
 /* <-- FUNCTIONS --> */
-void yyerror(const char* msg){}
-int yywrap (void) { return 1; }
+extern void yyerror(const char* msg){}
+extern "C" int yywrap (void) { return 1; }
 
 void saveInt(const char* name, int value) {
-	char* tmp = new char(MAX_VARIABLE_LENGTH);
-	strcpy(tmp, name);
-	arrChar[idxChar++] = tmp;
-	arrInt[idxInt++] = value;
+	//char* tmp = new char(MAX_VARIABLE_LENGTH);
+	//strcpy(tmp, name);
+	//arrChar[idxChar++] = tmp;
+	//arrInt[idxInt++] = value;
 	//printf("Saved %s == %d (%d, %d)\n", name, value, idxChar, idxInt);
 }
 
 int getInt(const char* name) {
-	short found = 0;
-	for (int i = 0; i < idxChar; i++) {
-		if (strcmp(name, arrChar[i]) == 0) {
-			found = 1;
-			return arrInt[i];
-		}
-	}
-	
-	if (!found) {
-		printf("Nie znaleziono zmiennej o nazwie %s\n", name);
-	}
+	//short found = 0;
+	//for (int i = 0; i < idxChar; i++) {
+	//	if (strcmp(name, arrChar[i]) == 0) {
+	//		found = 1;
+	//		return arrInt[i];
+	//	}
+	//}
+	//
+	//if (!found) {
+	//	printf("Nie znaleziono zmiennej o nazwie %s\n", name);
+	//}
 	return 0;
 }
 
+void showstack(stack <int> s) 
+{ 
+    while (!s.empty()) 
+    { 
+        cout << '\t' << s.top(); 
+        s.pop(); 
+    } 
+    cout << '\n'; 
+} 
+
 /* <-- MAIN --> */
+
 int main(int argc, char *argv[])
 {
+    VariableManager vb;
+	vb += new Variable("value", "name");
+	cout << vb.getVariable("name")->getSValue();
+	cout << "---tadam---";
+	
 	printf("Progrum run:\n");
 	printf("\n\n----------------------------\n");
 	yyparse();
 	printf("\n----------------------------\n\n");
-	printf("Lines: %d\n", yylineno);
+	//printf("Lines: %d\n", yylineno);
 	printf("Cleaning: ");
 	return 0;
 }

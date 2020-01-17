@@ -1,5 +1,10 @@
 set a = 3;
 set b = 4;
-c = a + b;
+set c = a;
+print("a = " + a);
+print("b = " + a);
+print("c = " + a);
+
+ + b;
 // tests up
 // test 2

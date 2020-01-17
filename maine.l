@@ -1,11 +1,12 @@
+%option noinput nounput
 %{
 #include <stdlib.h>
 #include <string.h>
-#include "maine.def.tab.cc"
+#include "maine.def.tab.hh"
 #define INFILE_ERROR 1
 #define OUTFILE_ERROR 2
 
-int yylineno;
+extern int yylineno;
 void say(char *msg);
 %}
 %%
