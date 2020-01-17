@@ -27,6 +27,9 @@ Variable* VariableManager::getVariable(string name)
 		// }
 		return v;
 	}
+	else {
+		cout << "ERROR: " << "Could not find variable named [" << name << "]." << endl;
+	}
 	return nullptr;
 }
 

@@ -1,16 +1,4 @@
-Variable::variableType::
 
-VAR INT STR DBL
-
-STR VAR
-STR INT
-STR STR
-STR DBL
-
-DBL VAR
-DBL INT
-DBL STR
-DBL DBL
 
 Tests:
 
