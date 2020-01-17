@@ -30,6 +30,12 @@ Variable::Variable(double value, string name) {
 
 string Variable::getSValue()
 {
+	if (this->type == Variable::variableType::DOUBLE) {
+		return to_string(dVal);
+	}
+	else if (this->type == Variable::variableType::INT) {
+		return to_string(iVal);
+	}
 	return this->sVal;
 }
 

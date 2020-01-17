@@ -90,9 +90,11 @@ void savingVariableInfo(string varVal, string varName);
 
 //int yylineno = 1;
 
-VariableManager vb;
+VariableManager vm;
 stack <int> stackInt;
-stack <string> stackString; 
+stack <double> stackDouble;
+stack <string> stackString;
+stack <Variable*> stackVariables;
 
 extern char *yytext;
 char *text;
@@ -101,7 +103,7 @@ double dval;
 
 
 /* Line 189 of yacc.c  */
-#line 105 "maine.def.tab.cc"
+#line 107 "maine.def.tab.cc"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -146,7 +148,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 32 "maine.def.yy"
+#line 34 "maine.def.yy"
 
 	char *text;
 	int	ival;
@@ -155,7 +157,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 159 "maine.def.tab.cc"
+#line 161 "maine.def.tab.cc"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -167,7 +169,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 171 "maine.def.tab.cc"
+#line 173 "maine.def.tab.cc"
 
 #ifdef short
 # undef short
@@ -380,18 +382,18 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  14
+#define YYFINAL  23
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   44
+#define YYLAST   366
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  16
+#define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  12
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  30
+#define YYNRULES  91
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  38
+#define YYNSTATES  123
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -406,10 +408,10 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    14,     2,    11,     2,     2,     2,     2,     2,
-       2,     2,     2,    13,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    15,
-       2,    12,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,    16,     2,    15,     2,     2,     2,     2,     2,
+       2,     2,    11,    13,     2,    12,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    17,
+       2,    14,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -435,34 +437,69 @@ static const yytype_uint8 yytranslate[] =
 #if YYDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
-static const yytype_uint8 yyprhs[] =
+static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     5,     8,    10,    12,    14,    17,    21,
-      25,    29,    33,    37,    40,    43,    45,    48,    51,    53,
-      55,    57,    59,    61,    63,    65,    67,    70,    72,    74,
-      77
+       0,     0,     3,     5,     8,    10,    12,    14,    16,    19,
+      23,    27,    31,    35,    39,    43,    47,    51,    53,    56,
+      59,    63,    67,    71,    75,    79,    83,    87,    91,    95,
+      99,   103,   107,   111,   115,   119,   123,   125,   128,   131,
+     135,   139,   143,   147,   151,   155,   159,   163,   167,   171,
+     175,   179,   183,   187,   191,   195,   197,   200,   203,   207,
+     211,   215,   219,   223,   227,   231,   235,   239,   243,   247,
+     251,   255,   259,   263,   267,   269,   272,   275,   278,   281,
+     283,   285,   287,   289,   291,   293,   295,   297,   300,   302,
+     304,   307
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      17,     0,    -1,    18,    -1,    17,    18,    -1,    25,    -1,
-      19,    -1,    22,    -1,    18,    27,    -1,     4,    26,    24,
-      -1,    19,    21,    23,    -1,    19,    21,    24,    -1,    19,
-      21,    22,    -1,    19,    21,    20,    -1,    11,     6,    -1,
-      20,    11,    -1,    12,    -1,    21,    26,    -1,    26,    21,
+      19,     0,    -1,    20,    -1,    19,    20,    -1,    30,    -1,
+      21,    -1,    29,    -1,    24,    -1,    20,    32,    -1,     4,
+      31,    29,    -1,    21,    25,    28,    -1,    21,    25,    29,
+      -1,    21,    25,    27,    -1,    21,    25,    26,    -1,    21,
+      25,    24,    -1,    21,    25,    23,    -1,    21,    25,    22,
+      -1,    11,    -1,    22,    31,    -1,    31,    22,    -1,    29,
+      22,    29,    -1,    29,    22,    28,    -1,    29,    22,    26,
+      -1,    29,    22,    27,    -1,    28,    22,    29,    -1,    28,
+      22,    28,    -1,    28,    22,    26,    -1,    28,    22,    27,
+      -1,    26,    22,    29,    -1,    26,    22,    28,    -1,    26,
+      22,    26,    -1,    26,    22,    27,    -1,    27,    22,    29,
+      -1,    27,    22,    28,    -1,    27,    22,    26,    -1,    27,
+      22,    27,    -1,    12,    -1,    23,    31,    -1,    31,    23,
+      -1,    29,    23,    29,    -1,    29,    23,    28,    -1,    29,
+      23,    26,    -1,    29,    23,    27,    -1,    28,    23,    29,
+      -1,    28,    23,    28,    -1,    28,    23,    26,    -1,    28,
+      23,    27,    -1,    26,    23,    29,    -1,    26,    23,    28,
+      -1,    26,    23,    26,    -1,    26,    23,    27,    -1,    27,
+      23,    29,    -1,    27,    23,    28,    -1,    27,    23,    26,
+      -1,    27,    23,    27,    -1,    13,    -1,    24,    31,    -1,
+      31,    24,    -1,    29,    24,    29,    -1,    29,    24,    28,
+      -1,    29,    24,    26,    -1,    29,    24,    27,    -1,    28,
+      24,    29,    -1,    28,    24,    28,    -1,    28,    24,    26,
+      -1,    28,    24,    27,    -1,    26,    24,    29,    -1,    26,
+      24,    28,    -1,    26,    24,    26,    -1,    26,    24,    27,
+      -1,    27,    24,    29,    -1,    27,    24,    28,    -1,    27,
+      24,    26,    -1,    27,    24,    27,    -1,    14,    -1,    25,
+      31,    -1,    31,    25,    -1,    15,     6,    -1,    26,    15,
       -1,     7,    -1,    10,    -1,     6,    -1,     8,    -1,     9,
-      -1,    26,    -1,     5,    -1,    14,    -1,    26,    14,    -1,
-       3,    -1,    15,    -1,    27,     3,    -1,    27,    15,    -1
+      -1,    31,    -1,     5,    -1,    16,    -1,    31,    16,    -1,
+       3,    -1,    17,    -1,    32,     3,    -1,    32,    17,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    50,    50,    51,    55,    56,    57,    58,    65,    68,
-      77,   107,   114,   126,   129,   139,   140,   141,   151,   157,
-     164,   169,   170,   171,   172,   176,   177,   181,   182,   183,
-     184
+       0,    52,    52,    53,    57,    58,    59,    60,    61,    68,
+      71,    79,   109,   116,   125,   134,   145,   159,   160,   161,
+     162,   182,   195,   212,   225,   239,   246,   253,   260,   275,
+     282,   289,   296,   310,   317,   324,   334,   335,   336,   337,
+     357,   370,   385,   398,   412,   419,   426,   433,   448,   455,
+     462,   469,   483,   490,   497,   507,   508,   509,   510,   530,
+     543,   558,   571,   585,   592,   599,   606,   621,   628,   635,
+     642,   656,   663,   670,   680,   681,   682,   686,   689,   693,
+     700,   707,   713,   714,   715,   716,   720,   721,   725,   726,
+     727,   728
 };
 #endif
 
@@ -472,9 +509,10 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "NEWLINE", "SET", "PRINT", "STR", "DBL",
-  "UNKNOWN", "COMMENTLINE", "INT", "'\"'", "'='", "'+'", "' '", "';'",
-  "$accept", "read_all", "line", "op_set", "quote", "op_assign", "double",
-  "integer", "identity", "ignore", "whitespace", "endl", 0
+  "UNKNOWN", "COMMENTLINE", "INT", "'*'", "'-'", "'+'", "'='", "'\"'",
+  "' '", "';'", "$accept", "read_all", "line", "op_set", "op_multi",
+  "op_sub", "op_add", "op_assign", "quote", "double", "integer",
+  "identity", "ignore", "whitespace", "endl", 0
 };
 #endif
 
@@ -484,26 +522,38 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,    34,    61,    43,    32,    59
+     265,    42,    45,    43,    61,    34,    32,    59
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    16,    17,    17,    18,    18,    18,    18,    19,    19,
-      19,    19,    19,    20,    20,    21,    21,    21,    22,    23,
-      24,    25,    25,    25,    25,    26,    26,    27,    27,    27,
-      27
+       0,    18,    19,    19,    20,    20,    20,    20,    20,    21,
+      21,    21,    21,    21,    21,    21,    21,    22,    22,    22,
+      22,    22,    22,    22,    22,    22,    22,    22,    22,    22,
+      22,    22,    22,    22,    22,    22,    23,    23,    23,    23,
+      23,    23,    23,    23,    23,    23,    23,    23,    23,    23,
+      23,    23,    23,    23,    23,    24,    24,    24,    24,    24,
+      24,    24,    24,    24,    24,    24,    24,    24,    24,    24,
+      24,    24,    24,    24,    25,    25,    25,    26,    26,    27,
+      28,    29,    30,    30,    30,    30,    31,    31,    32,    32,
+      32,    32
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     1,     1,     1,     2,     3,     3,
-       3,     3,     3,     2,     2,     1,     2,     2,     1,     1,
-       1,     1,     1,     1,     1,     1,     2,     1,     1,     2,
-       2
+       0,     2,     1,     2,     1,     1,     1,     1,     2,     3,
+       3,     3,     3,     3,     3,     3,     3,     1,     2,     2,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     1,     2,     2,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     1,     2,     2,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     1,     2,     2,     2,     2,     1,
+       1,     1,     1,     1,     1,     1,     1,     2,     1,     1,
+       2,     2
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -511,68 +561,159 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,    24,    18,    21,    22,    25,     0,     2,     5,
-       6,     4,    23,     0,     1,     3,    27,    28,     7,    15,
-       0,     0,    26,    20,     8,    29,    30,    19,     0,    12,
-      11,     9,    10,    16,    25,    17,    13,    14
+       0,     0,    85,    81,    79,    82,    83,    80,    55,     0,
+      86,     0,     2,     5,     7,     0,     0,     0,     6,     4,
+      84,     0,    77,     1,     3,    88,    89,     8,    74,     0,
+       0,    56,    78,     0,     0,     0,     0,     0,     0,    86,
+      57,    87,     9,    90,    91,    17,    36,    16,    15,    14,
+      13,    12,    10,    11,     0,    76,    68,    69,    67,    66,
+      72,    73,    71,    70,    64,    65,    63,    62,    60,    61,
+      59,    58,    18,    37,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    19,    38,    75,
+      78,    30,    31,    29,    28,    49,    50,    48,    47,    34,
+      35,    33,    32,    53,    54,    52,    51,    26,    27,    25,
+      24,    45,    46,    44,    43,    22,    23,    21,    20,    41,
+      42,    40,    39
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     7,     8,     9,    29,    20,    10,    31,    24,    11,
-      12,    18
+      -1,    11,    12,    13,    74,    75,    38,    29,    76,    77,
+      78,    79,    19,    80,    27
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -11
-static const yytype_int8 yypact[] =
+#define YYPACT_NINF -28
+static const yytype_int16 yypact[] =
 {
-      17,   -10,   -11,   -11,   -11,   -11,   -11,     2,    -2,    25,
-     -11,   -11,    -9,    21,   -11,    -2,   -11,   -11,     0,   -11,
-      22,    26,   -11,   -11,   -11,   -11,   -11,   -11,     6,     3,
-     -11,   -11,   -11,    -9,   -11,   -10,   -11,   -11
+     141,   -12,   -28,   -28,   -28,   -28,   -28,   -28,   -28,     3,
+     -28,   304,     4,   -11,   -12,   245,   263,   263,   263,   -28,
+     316,    40,   -28,   -28,     4,   -28,   -28,     5,   -28,   121,
+      -4,     7,     3,    94,   263,   316,    94,    94,    94,    54,
+     -12,   -28,   -28,   -28,   -28,   -28,   -28,   -12,   -12,   -12,
+     159,   121,   121,   121,   225,   -12,    -9,   -28,   -28,   -28,
+      -9,   -28,   -28,   -28,    -9,   -28,   -28,   -28,    -9,   -28,
+     -28,   -28,     7,     7,    94,    94,   159,   121,   121,   121,
+     225,    94,    94,    94,    94,    94,    94,   -12,   -12,     7,
+     -28,    -9,   -28,   -28,   -28,    -9,   -28,   -28,   -28,    -9,
+     -28,   -28,   -28,    -9,   -28,   -28,   -28,    -9,   -28,   -28,
+     -28,    -9,   -28,   -28,   -28,    -9,   -28,   -28,   -28,    -9,
+     -28,   -28,   -28
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -11,   -11,    10,   -11,   -11,    -3,    23,   -11,    24,   -11,
-      -1,   -11
+     -28,   -28,    17,   -28,   -27,   -10,   286,     1,   106,   182,
+     210,    78,   -28,     0,   -28
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
-static const yytype_uint8 yytable[] =
+#define YYTABLE_NINF -88
+static const yytype_int8 yytable[] =
 {
-      13,    16,    14,    25,     6,    22,     1,     2,    21,     3,
-       4,     5,    36,    17,    37,    26,     6,    15,    35,    33,
-      21,     1,     2,     0,     3,     4,     5,    23,    23,     3,
-       0,     6,    27,    28,    33,    22,     6,    19,    19,     6,
-      34,     0,     0,    30,    32
+      20,    21,    47,    28,    10,    10,    90,    25,    43,    22,
+      28,    20,    39,    30,    31,    35,    35,    35,    35,    48,
+      35,    26,    44,    41,    81,    83,    85,    87,    24,    54,
+      30,    55,     0,    31,    35,    35,    31,    31,    31,     0,
+      31,    82,    84,    86,    88,     0,     3,    72,    73,    31,
+      81,    83,    85,    87,   -87,    89,    41,   -87,   -87,   -87,
+       0,     0,   -87,   -87,     0,     0,     0,    82,    84,    86,
+      88,   -87,     0,     0,    72,    73,     0,     0,    18,     0,
+       0,    72,    73,    72,    73,    72,    73,    72,    73,    18,
+       0,     0,     0,    34,    34,    34,    34,     0,    34,    42,
+       3,     4,     0,     0,     7,     0,    15,    53,     0,     9,
+      10,    59,    34,    34,    63,    67,    71,    15,     0,     0,
+       0,    15,    15,    15,    15,     0,    15,     3,     4,     0,
+       0,     7,    45,    46,     8,    50,     9,    10,     0,    56,
+      15,    15,    60,    64,    68,     1,     2,     3,     4,     5,
+       6,     7,    94,    98,     8,     0,     9,    10,     0,   102,
+     106,   110,   114,   118,   122,     3,     4,     0,     0,     7,
+      45,    46,     8,     0,    32,    10,     0,     0,     0,     0,
+      91,    95,    16,     0,     0,     0,     0,    99,   103,   107,
+     111,   115,   119,    16,     0,     0,     0,    16,    16,    16,
+      16,     0,    16,     0,     0,     0,     0,     0,     0,     0,
+      17,    51,     0,     0,     0,    57,    16,    16,    61,    65,
+      69,    17,     0,     0,     0,    17,    17,    17,    17,     0,
+      17,     3,     4,     0,     0,     7,    45,    46,     8,    52,
+       9,    39,     0,    58,    17,    17,    62,    66,    70,     0,
+       0,     3,     4,     0,     0,     7,    92,    96,     8,     0,
+      32,    10,     0,   100,   104,   108,   112,   116,   120,     3,
+       4,     0,     0,     7,     0,     0,     8,     0,     9,    10,
+       0,     0,     0,     0,    93,    97,    14,     0,     0,     0,
+       0,   101,   105,   109,   113,   117,   121,    14,     0,     0,
+       0,    33,    36,    37,    23,     0,    40,     0,     1,     2,
+       3,     4,     5,     6,     7,    49,     0,     8,     0,     9,
+      10,    40,     3,     4,     0,     0,     7,     0,     0,     8,
+       0,     9,    39,     0,     0,     0,    33,    36,    37,     0,
+      40,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    33,    36,    37,     0,    40
 };
 
 static const yytype_int8 yycheck[] =
 {
-       1,     3,     0,     3,    14,    14,     4,     5,     9,     7,
-       8,     9,     6,    15,    11,    15,    14,     7,    21,    20,
-      21,     4,     5,    -1,     7,     8,     9,     6,     6,     7,
-      -1,    14,    10,    11,    35,    14,    14,    12,    12,    14,
-      14,    -1,    -1,    20,    20
+       0,     1,    29,    14,    16,    16,    15,     3,     3,     6,
+      14,    11,    16,    13,    14,    15,    16,    17,    18,    29,
+      20,    17,    17,    16,    51,    52,    53,    54,    11,    29,
+      30,    30,    -1,    33,    34,    35,    36,    37,    38,    -1,
+      40,    51,    52,    53,    54,    -1,     6,    47,    48,    49,
+      77,    78,    79,    80,     0,    55,    16,     3,     4,     5,
+      -1,    -1,     8,     9,    -1,    -1,    -1,    77,    78,    79,
+      80,    17,    -1,    -1,    74,    75,    -1,    -1,     0,    -1,
+      -1,    81,    82,    83,    84,    85,    86,    87,    88,    11,
+      -1,    -1,    -1,    15,    16,    17,    18,    -1,    20,    21,
+       6,     7,    -1,    -1,    10,    -1,     0,    29,    -1,    15,
+      16,    33,    34,    35,    36,    37,    38,    11,    -1,    -1,
+      -1,    15,    16,    17,    18,    -1,    20,     6,     7,    -1,
+      -1,    10,    11,    12,    13,    29,    15,    16,    -1,    33,
+      34,    35,    36,    37,    38,     4,     5,     6,     7,     8,
+       9,    10,    74,    75,    13,    -1,    15,    16,    -1,    81,
+      82,    83,    84,    85,    86,     6,     7,    -1,    -1,    10,
+      11,    12,    13,    -1,    15,    16,    -1,    -1,    -1,    -1,
+      74,    75,     0,    -1,    -1,    -1,    -1,    81,    82,    83,
+      84,    85,    86,    11,    -1,    -1,    -1,    15,    16,    17,
+      18,    -1,    20,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+       0,    29,    -1,    -1,    -1,    33,    34,    35,    36,    37,
+      38,    11,    -1,    -1,    -1,    15,    16,    17,    18,    -1,
+      20,     6,     7,    -1,    -1,    10,    11,    12,    13,    29,
+      15,    16,    -1,    33,    34,    35,    36,    37,    38,    -1,
+      -1,     6,     7,    -1,    -1,    10,    74,    75,    13,    -1,
+      15,    16,    -1,    81,    82,    83,    84,    85,    86,     6,
+       7,    -1,    -1,    10,    -1,    -1,    13,    -1,    15,    16,
+      -1,    -1,    -1,    -1,    74,    75,     0,    -1,    -1,    -1,
+      -1,    81,    82,    83,    84,    85,    86,    11,    -1,    -1,
+      -1,    15,    16,    17,     0,    -1,    20,    -1,     4,     5,
+       6,     7,     8,     9,    10,    29,    -1,    13,    -1,    15,
+      16,    35,     6,     7,    -1,    -1,    10,    -1,    -1,    13,
+      -1,    15,    16,    -1,    -1,    -1,    50,    51,    52,    -1,
+      54,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    76,    77,    78,    -1,    80
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     4,     5,     7,     8,     9,    14,    17,    18,    19,
-      22,    25,    26,    26,     0,    18,     3,    15,    27,    12,
-      21,    26,    14,     6,    24,     3,    15,    10,    11,    20,
-      22,    23,    24,    26,    14,    21,     6,    11
+       0,     4,     5,     6,     7,     8,     9,    10,    13,    15,
+      16,    19,    20,    21,    24,    26,    27,    28,    29,    30,
+      31,    31,     6,     0,    20,     3,    17,    32,    14,    25,
+      31,    31,    15,    24,    29,    31,    24,    24,    24,    16,
+      24,    16,    29,     3,    17,    11,    12,    22,    23,    24,
+      26,    27,    28,    29,    31,    25,    26,    27,    28,    29,
+      26,    27,    28,    29,    26,    27,    28,    29,    26,    27,
+      28,    29,    31,    31,    22,    23,    26,    27,    28,    29,
+      31,    22,    23,    22,    23,    22,    23,    22,    23,    31,
+      15,    26,    27,    28,    29,    26,    27,    28,    29,    26,
+      27,    28,    29,    26,    27,    28,    29,    26,    27,    28,
+      29,    26,    27,    28,    29,    26,    27,    28,    29,    26,
+      27,    28,    29
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1386,54 +1527,52 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 50 "maine.def.yy"
+#line 52 "maine.def.yy"
     { ;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 51 "maine.def.yy"
+#line 53 "maine.def.yy"
     { ;}
     break;
 
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 55 "maine.def.yy"
-    {;}
+#line 57 "maine.def.yy"
+    { cout << endl; ;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 56 "maine.def.yy"
+#line 58 "maine.def.yy"
     {;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 57 "maine.def.yy"
+#line 59 "maine.def.yy"
     {;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 58 "maine.def.yy"
-    { 
-		//printf(" \r\t\t\t\t\t\t >> %s \n", yytext);
-		// printf("\n");
-	;}
+#line 60 "maine.def.yy"
+    {;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 65 "maine.def.yy"
-    {
-		stackString.push(yytext);
+#line 61 "maine.def.yy"
+    { 
+		//printf(" \r\t\t\t\t\t\t >> %s \n", yytext);
+		// printf("\n");
 	;}
     break;
 
@@ -1442,8 +1581,16 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 68 "maine.def.yy"
     {
-		stackInt.push(atoi(yytext));
-		int result = (vb += new Variable(stackInt.top(), stackString.top()));
+		stackString.push(yytext);
+	;}
+    break;
+
+  case 10:
+
+/* Line 1455 of yacc.c  */
+#line 71 "maine.def.yy"
+    {
+		int result = (vm += new Variable(stackInt.top(), stackString.top()));
 		if (!result){
 			savingVariableInfo(to_string(stackInt.top()), stackString.top());
 		}
@@ -1452,33 +1599,33 @@ yyreduce:
 	;}
     break;
 
-  case 10:
+  case 11:
 
 /* Line 1455 of yacc.c  */
-#line 77 "maine.def.yy"
+#line 79 "maine.def.yy"
     {
 		string name = yytext;
-		Variable* var = vb[name];
+		Variable* var = vm[name];
 		if (var == nullptr) {
 			cout << "Could not find variable named [" << name << "]" << endl;
 		}
 		else {
 			if (var->getType() == Variable::variableType::INT) {
-				int result = (vb += new Variable(var->getIValue(), stackString.top()));
+				int result = (vm += new Variable(var->getIValue(), stackString.top()));
 				if (!result){
 					savingVariableInfo(to_string(var->getIValue()), stackString.top());
 				}
 				stackString.pop();
 			}
 			else if (var->getType() == Variable::variableType::DOUBLE) {
-				int result = (vb += new Variable(var->getDValue(), stackString.top()));
+				int result = (vm += new Variable(var->getDValue(), stackString.top()));
 				if (!result){
 					savingVariableInfo(to_string(var->getDValue()), stackString.top());
 				}
 				stackString.pop();
 			}
 			else if (var->getType() == Variable::variableType::STRING) {
-				int result = (vb += new Variable(var->getSValue(), stackString.top()));
+				int result = (vm += new Variable(var->getSValue(), stackString.top()));
 				if (!result) {
 					savingVariableInfo(var->getSValue(), stackString.top());
 				}
@@ -1488,12 +1635,12 @@ yyreduce:
 	;}
     break;
 
-  case 11:
+  case 12:
 
 /* Line 1455 of yacc.c  */
-#line 107 "maine.def.yy"
+#line 109 "maine.def.yy"
     {
-		int result = (vb += new Variable(dval, stackString.top()));
+		int result = (vm += new Variable(dval, stackString.top()));
 		if (!result) {
 			savingVariableInfo(to_string(dval), stackString.top());
 		}
@@ -1501,14 +1648,14 @@ yyreduce:
 	;}
     break;
 
-  case 12:
+  case 13:
 
 /* Line 1455 of yacc.c  */
-#line 114 "maine.def.yy"
+#line 116 "maine.def.yy"
     {
 		string value = stackString.top();
 		stackString.pop();
-		int result = (vb += new Variable(value, stackString.top()));
+		int result = (vm += new Variable(value, stackString.top()));
 		if (!result) {
 			savingVariableInfo(value, stackString.top());
 		}
@@ -1516,144 +1663,1049 @@ yyreduce:
 	;}
     break;
 
-  case 13:
-
-/* Line 1455 of yacc.c  */
-#line 126 "maine.def.yy"
-    {
-		stackString.push(yytext);
-	;}
-    break;
-
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 129 "maine.def.yy"
-    {;}
+#line 125 "maine.def.yy"
+    {
+		stackVariables.top()->setName(stackString.top());
+		int result = (vm += stackVariables.top());
+		if (!result) {
+			savingVariableInfo(stackVariables.top()->getSValue(), stackVariables.top()->getName());
+		}
+		stackVariables.pop();
+		stackString.pop();
+	;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 139 "maine.def.yy"
-    {printf("");;}
+#line 134 "maine.def.yy"
+    {
+		if (stackVariables.top() != nullptr) {
+			stackVariables.top()->setName(stackString.top());
+			int result = (vm += stackVariables.top());
+			if (!result) {
+				savingVariableInfo(stackVariables.top()->getSValue(), stackVariables.top()->getName());
+			}
+		}
+		stackVariables.pop();
+		stackString.pop();
+	;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 140 "maine.def.yy"
-    {printf("");;}
+#line 145 "maine.def.yy"
+    {
+		if (stackVariables.top() != nullptr) {
+			stackVariables.top()->setName(stackString.top());
+			int result = (vm += stackVariables.top());
+			if (!result) {
+				savingVariableInfo(stackVariables.top()->getSValue(), stackVariables.top()->getName());
+			}
+		}
+		stackVariables.pop();
+		stackString.pop();
+	;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 141 "maine.def.yy"
-    {printf("");;}
+#line 159 "maine.def.yy"
+    {;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 151 "maine.def.yy"
-    {
-		dval = atof(yytext);
-	;}
+#line 160 "maine.def.yy"
+    {;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 157 "maine.def.yy"
-    {
-		ival = atoi(yytext);
-		stackInt.push(ival);
-	;}
+#line 161 "maine.def.yy"
+    {;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 164 "maine.def.yy"
+#line 162 "maine.def.yy"
     {
+		// expr:
+		// ;
+		string suppVal = stackString.top(); 
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		Variable* suppVar = vm[suppVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else if (suppVar == nullptr) {
+			cout << "Could not find variable named [" << suppVal << "]";
+		}
+		else {
+			stackVariables.push(vm.multipleVariables(mainVar, suppVar));
+		}
 	;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 169 "maine.def.yy"
-    {printf("#");;}
+#line 182 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(ival, "temp");
+			stackVariables.push(vm.multipleVariables(mainVar, suppVar));
+		}
+	;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 170 "maine.def.yy"
-    {printf("### %s ###", yytext);;}
+#line 195 "maine.def.yy"
+    {
+		string stringValue = stackString.top();
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			// cout << "TEST = " << mainVar->getIValue();
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.multipleVariables(mainVar, suppVar));
+		}
+	;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 171 "maine.def.yy"
-    {printf(" ");;}
+#line 212 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(dval, "temp");
+			stackVariables.push(vm.multipleVariables(mainVar, suppVar));
+		}
+	;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 172 "maine.def.yy"
-    {printf("print");;}
+#line 225 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stackInt.top(), "temp");
+			stackVariables.push(vm.multipleVariables(suppVar, mainVar));
+		}
+		stackInt.pop();
+	;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 176 "maine.def.yy"
-    {;}
+#line 239 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 177 "maine.def.yy"
-    {;}
+#line 246 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 181 "maine.def.yy"
-    {;}
+#line 253 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 182 "maine.def.yy"
-    {;}
+#line 260 "maine.def.yy"
+    {
+		string varName = stackString.top();
+		stackString.pop();
+		string stringValue = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.multipleVariables(suppVar, mainVar));
+		}
+	;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 183 "maine.def.yy"
-    {;}
+#line 275 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 184 "maine.def.yy"
+#line 282 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 31:
+
+/* Line 1455 of yacc.c  */
+#line 289 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 32:
+
+/* Line 1455 of yacc.c  */
+#line 296 "maine.def.yy"
+    {
+		Variable *suppVar = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		string varName = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			stackVariables.push(vm.multipleVariables(suppVar, mainVar));
+		}
+	;}
+    break;
+
+  case 33:
+
+/* Line 1455 of yacc.c  */
+#line 310 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 34:
+
+/* Line 1455 of yacc.c  */
+#line 317 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 35:
+
+/* Line 1455 of yacc.c  */
+#line 324 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 36:
+
+/* Line 1455 of yacc.c  */
+#line 334 "maine.def.yy"
+    {;}
+    break;
+
+  case 37:
+
+/* Line 1455 of yacc.c  */
+#line 335 "maine.def.yy"
+    {;}
+    break;
+
+  case 38:
+
+/* Line 1455 of yacc.c  */
+#line 336 "maine.def.yy"
+    {;}
+    break;
+
+  case 39:
+
+/* Line 1455 of yacc.c  */
+#line 337 "maine.def.yy"
+    {
+		// expr:
+		// ;
+		string suppVal = stackString.top(); 
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		Variable* suppVar = vm[suppVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else if (suppVar == nullptr) {
+			cout << "Could not find variable named [" << suppVal << "]";
+		}
+		else {
+			stackVariables.push(vm.subVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 40:
+
+/* Line 1455 of yacc.c  */
+#line 357 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(ival, "temp");
+			stackVariables.push(vm.subVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 41:
+
+/* Line 1455 of yacc.c  */
+#line 370 "maine.def.yy"
+    {
+		string stringValue = stackString.top();
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.subVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 42:
+
+/* Line 1455 of yacc.c  */
+#line 385 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(dval, "temp");
+			stackVariables.push(vm.subVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 43:
+
+/* Line 1455 of yacc.c  */
+#line 398 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stackInt.top(), "temp");
+			stackVariables.push(vm.subVariables(suppVar, mainVar));
+		}
+		stackInt.pop();
+	;}
+    break;
+
+  case 44:
+
+/* Line 1455 of yacc.c  */
+#line 412 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 45:
+
+/* Line 1455 of yacc.c  */
+#line 419 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 46:
+
+/* Line 1455 of yacc.c  */
+#line 426 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 47:
+
+/* Line 1455 of yacc.c  */
+#line 433 "maine.def.yy"
+    {
+		string varName = stackString.top();
+		stackString.pop();
+		string stringValue = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.subVariables(suppVar, mainVar));
+		}
+	;}
+    break;
+
+  case 48:
+
+/* Line 1455 of yacc.c  */
+#line 448 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 49:
+
+/* Line 1455 of yacc.c  */
+#line 455 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 50:
+
+/* Line 1455 of yacc.c  */
+#line 462 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 51:
+
+/* Line 1455 of yacc.c  */
+#line 469 "maine.def.yy"
+    {
+		Variable *suppVar = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		string varName = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			stackVariables.push(vm.subVariables(suppVar, mainVar));
+		}
+	;}
+    break;
+
+  case 52:
+
+/* Line 1455 of yacc.c  */
+#line 483 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 53:
+
+/* Line 1455 of yacc.c  */
+#line 490 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 54:
+
+/* Line 1455 of yacc.c  */
+#line 497 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 55:
+
+/* Line 1455 of yacc.c  */
+#line 507 "maine.def.yy"
+    {;}
+    break;
+
+  case 56:
+
+/* Line 1455 of yacc.c  */
+#line 508 "maine.def.yy"
+    {;}
+    break;
+
+  case 57:
+
+/* Line 1455 of yacc.c  */
+#line 509 "maine.def.yy"
+    {;}
+    break;
+
+  case 58:
+
+/* Line 1455 of yacc.c  */
+#line 510 "maine.def.yy"
+    {
+		// expr:
+		// ;
+		string suppVal = stackString.top(); 
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		Variable* suppVar = vm[suppVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else if (suppVar == nullptr) {
+			cout << "Could not find variable named [" << suppVal << "]";
+		}
+		else {
+			stackVariables.push(vm.addVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 59:
+
+/* Line 1455 of yacc.c  */
+#line 530 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(ival, "temp");
+			stackVariables.push(vm.addVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 60:
+
+/* Line 1455 of yacc.c  */
+#line 543 "maine.def.yy"
+    {
+		string stringValue = stackString.top();
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.addVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 61:
+
+/* Line 1455 of yacc.c  */
+#line 558 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(dval, "temp");
+			stackVariables.push(vm.addVariables(mainVar, suppVar));
+		}
+	;}
+    break;
+
+  case 62:
+
+/* Line 1455 of yacc.c  */
+#line 571 "maine.def.yy"
+    {
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stackInt.top(), "temp");
+			stackVariables.push(vm.addVariables(mainVar, suppVar));
+		}
+		stackInt.pop();
+	;}
+    break;
+
+  case 63:
+
+/* Line 1455 of yacc.c  */
+#line 585 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 64:
+
+/* Line 1455 of yacc.c  */
+#line 592 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 65:
+
+/* Line 1455 of yacc.c  */
+#line 599 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 66:
+
+/* Line 1455 of yacc.c  */
+#line 606 "maine.def.yy"
+    {
+		string varName = stackString.top();
+		stackString.pop();
+		string stringValue = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			Variable *suppVar = new Variable(stringValue, "temp");
+			stackVariables.push(vm.addVariables(suppVar, mainVar));
+		}
+	;}
+    break;
+
+  case 67:
+
+/* Line 1455 of yacc.c  */
+#line 621 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 68:
+
+/* Line 1455 of yacc.c  */
+#line 628 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 69:
+
+/* Line 1455 of yacc.c  */
+#line 635 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 70:
+
+/* Line 1455 of yacc.c  */
+#line 642 "maine.def.yy"
+    {
+		Variable *suppVar = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		string varName = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[varName];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << varName << "]";
+		}
+		else {
+			stackVariables.push(vm.addVariables(suppVar, mainVar));
+		}
+	;}
+    break;
+
+  case 71:
+
+/* Line 1455 of yacc.c  */
+#line 656 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
+		stackInt.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 72:
+
+/* Line 1455 of yacc.c  */
+#line 663 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackString.top(), "temp");
+		stackString.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 73:
+
+/* Line 1455 of yacc.c  */
+#line 670 "maine.def.yy"
+    {
+		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
+		stackDouble.pop();
+		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
+	;}
+    break;
+
+  case 74:
+
+/* Line 1455 of yacc.c  */
+#line 680 "maine.def.yy"
+    {;}
+    break;
+
+  case 75:
+
+/* Line 1455 of yacc.c  */
+#line 681 "maine.def.yy"
+    {;}
+    break;
+
+  case 76:
+
+/* Line 1455 of yacc.c  */
+#line 682 "maine.def.yy"
+    {;}
+    break;
+
+  case 77:
+
+/* Line 1455 of yacc.c  */
+#line 686 "maine.def.yy"
+    {
+		stackString.push(yytext);
+	;}
+    break;
+
+  case 78:
+
+/* Line 1455 of yacc.c  */
+#line 689 "maine.def.yy"
+    {;}
+    break;
+
+  case 79:
+
+/* Line 1455 of yacc.c  */
+#line 693 "maine.def.yy"
+    {
+		dval = atof(yytext);
+		stackDouble.push(dval);
+	;}
+    break;
+
+  case 80:
+
+/* Line 1455 of yacc.c  */
+#line 700 "maine.def.yy"
+    {
+		ival = atoi(yytext);
+		stackInt.push(ival);
+	;}
+    break;
+
+  case 81:
+
+/* Line 1455 of yacc.c  */
+#line 707 "maine.def.yy"
+    {
+		stackString.push(yytext);
+	;}
+    break;
+
+  case 82:
+
+/* Line 1455 of yacc.c  */
+#line 713 "maine.def.yy"
+    {printf("#");;}
+    break;
+
+  case 83:
+
+/* Line 1455 of yacc.c  */
+#line 714 "maine.def.yy"
+    {printf("### %s ###", yytext);;}
+    break;
+
+  case 84:
+
+/* Line 1455 of yacc.c  */
+#line 715 "maine.def.yy"
+    {printf(" ");;}
+    break;
+
+  case 85:
+
+/* Line 1455 of yacc.c  */
+#line 716 "maine.def.yy"
+    {printf("print...");;}
+    break;
+
+  case 86:
+
+/* Line 1455 of yacc.c  */
+#line 720 "maine.def.yy"
+    {;}
+    break;
+
+  case 87:
+
+/* Line 1455 of yacc.c  */
+#line 721 "maine.def.yy"
+    {;}
+    break;
+
+  case 88:
+
+/* Line 1455 of yacc.c  */
+#line 725 "maine.def.yy"
+    {;}
+    break;
+
+  case 89:
+
+/* Line 1455 of yacc.c  */
+#line 726 "maine.def.yy"
+    {;}
+    break;
+
+  case 90:
+
+/* Line 1455 of yacc.c  */
+#line 727 "maine.def.yy"
+    {;}
+    break;
+
+  case 91:
+
+/* Line 1455 of yacc.c  */
+#line 728 "maine.def.yy"
     {;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1657 "maine.def.tab.cc"
+#line 2709 "maine.def.tab.cc"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1865,7 +2917,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 186 "maine.def.yy"
+#line 730 "maine.def.yy"
 
 /* <-- FUNCTIONS --> */
 extern void yyerror(const char* msg){}
@@ -1882,8 +2934,7 @@ void showstack(stack <int> s)
 } 
 
 void savingVariableInfo(string varVal, string varName) {
-	cout << "Saving value [" << varVal << "] into variable named [" 
-		<< varName << "]" << endl;
+	cout << "[" << varName << "] = [" << varVal << "]" << endl;
 }
 
 /* <-- MAIN --> */

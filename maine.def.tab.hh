@@ -57,7 +57,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 32 "maine.def.yy"
+#line 34 "maine.def.yy"
 
 	char *text;
 	int	ival;

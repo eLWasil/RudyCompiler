@@ -11,6 +11,19 @@ void say(char *msg);
 %}
 %%
 "//"+.* { return COMMENTLINE; }
+
+\* {
+	return '*';
+}
+
+\- {
+	return '-';
+}
+
+\+ {
+	return '+';
+}
+
 \= {
 	return '=';
 }
