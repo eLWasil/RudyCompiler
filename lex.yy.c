@@ -282,14 +282,14 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 16
-#define YY_END_OF_BUFFER 17
+#define YY_NUM_RULES 17
+#define YY_END_OF_BUFFER 18
 static yyconst short int yy_accept[33] =
     {   0,
-        0,    0,   17,   15,   12,   14,   11,    2,    4,    3,
-       15,    9,   13,    5,   10,   10,   10,    1,    8,    9,
-       10,   10,   10,    1,    1,    8,   10,    6,    1,   10,
-        7,    0
+        0,    0,   18,   16,   13,   15,   12,    3,    5,    4,
+        2,   10,   14,    6,   11,   11,   11,    1,    9,   10,
+       11,   11,   11,    1,    1,    9,   11,    7,    1,   11,
+        8,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -638,99 +638,106 @@ case 2:
 YY_RULE_SETUP
 #line 15 "maine.l"
 {
-	return '*';
+	return '/';
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 19 "maine.l"
 {
-	return '-';
+	return '*';
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 23 "maine.l"
 {
-	return '+';
+	return '-';
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 27 "maine.l"
 {
-	return '=';
+	return '+';
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 31 "maine.l"
 {
-	return SET;
+	return '=';
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 35 "maine.l"
 {
-	return PRINT;
+	return SET;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 39 "maine.l"
 {
-	yylval.text = strdup(yytext);
-	return DBL;
+	return PRINT;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 44 "maine.l"
+#line 43 "maine.l"
+{
+	yylval.text = strdup(yytext);
+	return DBL;
+}
+	YY_BREAK
+case 10:
+YY_RULE_SETUP
+#line 48 "maine.l"
 {
 				yylval.ival = atoi(yytext);
 				return INT;
 				}
 	YY_BREAK
-case 10:
+case 11:
 YY_RULE_SETUP
-#line 49 "maine.l"
+#line 53 "maine.l"
 {
 					yylval.text = strdup(yytext);
 					return STR;
 					}
 	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 54 "maine.l"
-{ return '"'; }
-	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 55 "maine.l"
-{ return NEWLINE; }
+#line 58 "maine.l"
+{ return '"'; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 56 "maine.l"
-{ return ';'; }
+#line 59 "maine.l"
+{ return NEWLINE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 57 "maine.l"
-{ return ' '; }
+#line 60 "maine.l"
+{ return ';'; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 58 "maine.l"
-{ return UNKNOWN; }
+#line 61 "maine.l"
+{ return ' '; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 59 "maine.l"
+#line 62 "maine.l"
+{ return UNKNOWN; }
+	YY_BREAK
+case 17:
+YY_RULE_SETUP
+#line 63 "maine.l"
 ECHO;
 	YY_BREAK
-#line 734 "lex.yy.c"
+#line 741 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1616,7 +1623,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 59 "maine.l"
+#line 63 "maine.l"
 
 void say(char *msg) {
 	fprintf(yyout, msg);

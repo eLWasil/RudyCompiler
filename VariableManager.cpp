@@ -161,3 +161,37 @@ Variable* VariableManager::multipleVariables(Variable *mainVar, Variable *suppVa
 	}
 	return nullptr;
 }
+
+
+Variable* VariableManager::divideVariables(Variable *mainVar, Variable *suppVar) {
+	if (mainVar->getType() == Variable::variableType::STRING) {
+		cout << "ERROR: Operation not allowed\n";
+		return nullptr;
+	}
+	else if (suppVar->getType() == Variable::variableType::STRING)
+	{
+		cout << "ERROR: Operation not allowed\n";
+		return nullptr;
+	}
+	else if (mainVar->getType() == Variable::variableType::DOUBLE) {
+		if (suppVar->getType() == Variable::variableType::DOUBLE) {
+			double val = mainVar->getDValue() / suppVar->getDValue();
+			return (new Variable(val, "result"));
+		}
+		else if (suppVar->getType() == Variable::variableType::INT) {
+			double val = mainVar->getDValue() / suppVar->getIValue();
+			return (new Variable(val, "result"));
+		}
+	}
+	else if (mainVar->getType() == Variable::variableType::INT) {
+		if (suppVar->getType() == Variable::variableType::INT) {
+			double val = mainVar->getIValue() / suppVar->getIValue();
+			return (new Variable(val, "result"));
+		}
+		else if (suppVar->getType() == Variable::variableType::DOUBLE) {
+			double val = mainVar->getIValue() / suppVar->getDValue();
+			return (new Variable(val, "result"));
+		}
+	}
+	return nullptr;
+}

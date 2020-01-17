@@ -3,25 +3,25 @@ set b = 3.14
 set b = 3
 set c = "abc"
 //------------------------------\\
-set d1 = a * b
-set d2 = a * 10
-set d3 = a * "abc"
-set d4 = a * 3.01
+set d1 = a / b
+set d2 = a / 10
+set d3 = a / "abc"
+set d4 = a / 3.01
 
-set d5 = 3 * b
-set d6 = 3 * 3
-set d7 = 3 * "abc"
-set d8 = 3 * 3.01
+set d5 = 3 / b
+set d6 = 3 / 3
+set d7 = 3 / "abc"
+set d8 = 3 / 3.01
 
-set d9 =  "abc" * b
-set d10 = "abc" * 3
-set d11 = "abc" * "abc"
-set d12 = "abc" * 3.01
+set d9 =  "abc" / b
+set d10 = "abc" / 3
+set d11 = "abc" / "abc"
+set d12 = "abc" / 3.01
 
-set d13 = 3.01 * b
-set d14 = 3.01 * 100
-set d15 = 3.01 * "abc"
-set d16 = 3.01 * 3.01
+set d13 = 3.01 / b
+set d14 = 3.01 / 100
+set d15 = 3.01 / "abc"
+set d16 = 3.01 / 3.01
 //------------------------------\\
 
 //set calc2 = a - b
