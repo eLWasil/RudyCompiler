@@ -18,6 +18,7 @@ public:
 	Variable* addVariables(Variable *mainVar, Variable *suppVar);
 	Variable* subVariables(Variable *mainVar, Variable *suppVar);
 	Variable* multipleVariables(Variable *mainVar, Variable *suppVar);
+	Variable* divideVariables(Variable *mainVar, Variable *suppVar);
 	
 };
 
