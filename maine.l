@@ -19,18 +19,28 @@ void say(char *msg);
 	return SET;
 }
 
+"print" {
+	return PRINT;
+}
+
+[1-9][0-9]*\.+[0-9]* {
+	yylval.text = strdup(yytext);
+	return DBL;
+}
+
 [1-9][0-9]*		{
 				yylval.ival = atoi(yytext);
 				return INT;
-				}	
+				}
+
 [A-Za-z][A-Za-z0-9_]*	{
 					yylval.text = strdup(yytext);
 					return STR;
 					}
+
+\"		{ return '"'; }
 "\n"    { return NEWLINE; }
 ";"    	{ return ';'; }
-"\n"+   { return PARAGRAPH; }
-<<EOF>> { return LEX_EOF; }
 " " 	{ return ' '; }
 .		{ return UNKNOWN; }
 %%

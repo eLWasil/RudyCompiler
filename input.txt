@@ -1,6 +1,12 @@
-set a = 3;
-set b = 4;
-set c = a;
+set a = 666
+set b = 3.14
+set b = 3
+set c = "abc"
+set calc1 = a + b
+set calc2 = a - b
+set calc3 = a * b
+set calc4 = a / b 
+//comment
 print("a = " + a);
 print("b = " + a);
 print("c = " + a);

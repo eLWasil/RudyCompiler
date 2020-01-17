@@ -30,12 +30,18 @@ Variable* VariableManager::getVariable(string name)
 	return nullptr;
 }
 
-void VariableManager::operator+=(Variable *v)
+int VariableManager::operator+=(Variable *v)
 {
 	if (this->variablesMap.find(v->getName()) != variablesMap.end()) {
 		cout << "ERROR: " << "Variable named [" << v->getName() << "] already exists." << endl;
+		return 1;
 	}
 	else {
 		this->variablesMap[v->getName()] = v;
 	}
+	return 0;
+}
+
+Variable* VariableManager::operator[](string name) {
+	return this->getVariable(name);
 }

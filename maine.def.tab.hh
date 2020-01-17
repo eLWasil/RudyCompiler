@@ -40,10 +40,10 @@
       know about them.  */
    enum yytokentype {
      NEWLINE = 258,
-     PARAGRAPH = 259,
-     LEX_EOF = 260,
-     SET = 261,
-     STR = 262,
+     SET = 259,
+     PRINT = 260,
+     STR = 261,
+     DBL = 262,
      UNKNOWN = 263,
      COMMENTLINE = 264,
      INT = 265
@@ -59,13 +59,14 @@ typedef union YYSTYPE
 /* Line 1676 of yacc.c  */
 #line 32 "maine.def.yy"
 
-char *text;
-int	ival;
+	char *text;
+	int	ival;
+	double dval;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 69 "maine.def.tab.hh"
+#line 70 "maine.def.tab.hh"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

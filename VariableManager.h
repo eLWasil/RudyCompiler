@@ -13,8 +13,8 @@ private:
 public:
 	~VariableManager();
 	Variable* getVariable(string name);
-	void operator+= (Variable *);
-
+	int operator+= (Variable *);
+	Variable* operator[](string name);
 
 };
 
