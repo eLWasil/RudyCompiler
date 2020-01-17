@@ -1,21 +1,28 @@
 CC=gcc
+CPP=g++
 LEX=flex
 YACC=bison
 LD=gcc
+ 
+all:	helpers	leks run
 
-all: lex.yy.c tokens exe run clean
+leks:	def.tab.o lex.yy.o
+	$(CPP) lex.yy.o Variable.o VariableManager.o maine.def.tab.o -o leks
+
+lex.yy.o:	lex.yy.c
+	$(CC) -c lex.yy.c
 
 lex.yy.c: maine.l
 	$(LEX) maine.l
 
-exe: lex.yy.c maine.def.tab.c
-	$(CC) lex.yy.c -o rudyCompiler
+def.tab.o:	def.tab.cc
+	$(CPP) -c maine.def.tab.cc
 
-run: rudyCompiler.exe input.txt
-	./rudyCompiler.exe < input.txt
+def.tab.cc:	maine.def.yy
+	$(YACC) -d maine.def.yy
+
+run: leks.exe input.txt
+	./leks.exe < input.txt
 	
-clean: lex.yy.c maine.def.tab.c
-	rm lex.yy.c maine.def.tab.c
-	
-tokens: maine.def.y
-	$(YACC) maine.def.y
+helpers:
+	$(CPP) -c Variable.cpp VariableManager.cpp

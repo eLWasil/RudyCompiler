@@ -1,0 +1,35 @@
+Variable::variableType::
+
+VAR INT STR DBL
+
+STR VAR
+STR INT
+STR STR
+STR DBL
+
+DBL VAR
+DBL INT
+DBL STR
+DBL DBL
+
+Tests:
+
+set d1 = a + b
+set d2 = a + 34
+set d3 = a + "abc"
+set d4 = a + 3.14
+
+set d5 = 3 + b
+set d6 = 3 + 3
+set d7 = 3 + "abc"
+set d8 = 3 + 3.14
+
+set d9 =  "abc" + b
+set d10 = "abc" + 3
+set d11 = "abc" + "abc"
+set d12 = "abc" + 3.14
+
+set d13 = 3.14 + b
+set d14 = 3.14 + 3
+set d15 = 3.14 + "abc"
+set d16 = 3.14 + 3.14
