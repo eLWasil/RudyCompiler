@@ -944,16 +944,6 @@ endl:
 extern void yyerror(const char* msg){}
 extern "C" int yywrap (void) { return 1; }
 
-void showstack(stack <int> s) 
-{ 
-    while (!s.empty()) 
-    { 
-        cout << '\t' << s.top(); 
-        s.pop(); 
-    } 
-    cout << '\n'; 
-} 
-
 void savingVariableInfo(string varVal, string varName) {
 	cout << "[" << varName << "] = [" << varVal << "]" << endl;
 }
@@ -965,7 +955,5 @@ int main(int argc, char *argv[])
 	printf("\n\n----------------------------\n");
 	yyparse();
 	printf("\n----------------------------\n\n");
-	//printf("Lines: %d\n", yylineno);
-	printf("Cleaning: ");
 	return 0;
 }

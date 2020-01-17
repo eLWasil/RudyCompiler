@@ -12,19 +12,6 @@ Variable* VariableManager::getVariable(string name)
 {
 	if (this->variablesMap.find(name) != variablesMap.end()) {
 		Variable *v = variablesMap[name];
-		// cout << "Found variable named [" << name << "] type = ";
-		// if (v->getType() == Variable::variableType::DOUBLE)
-		// {
-		// 	cout << "double and value = " << v->getDValue() << endl;
-		// }
-		// else if (v->getType() == Variable::variableType::INT)
-		// {
-		// 	cout << "int and value = " << v->getIValue() << endl;
-		// }
-		// else if (v->getType() == Variable::variableType::STRING)
-		// {
-		// 	cout << "string and value = " << v->getSValue() << endl;
-		// }
 		return v;
 	}
 	else {
