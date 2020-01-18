@@ -32,7 +32,7 @@ string Variable::getSValue()
 {
 	if (this->type == Variable::variableType::DOUBLE) {
 		return to_string(dVal);
-	}
+	}	
 	else if (this->type == Variable::variableType::INT) {
 		return to_string(iVal);
 	}
@@ -47,4 +47,12 @@ int Variable::getIValue()
 double Variable::getDValue()
 {
 	return this->dVal;
+}
+
+Variable* Variable::operator=(Variable* newValue) {
+	this->iVal = newValue->getIValue();
+	this->dVal = newValue->getDValue();
+	this->sVal = newValue->getSValue();
+	this->type = newValue->getType();
+	return this;
 }

@@ -185,3 +185,7 @@ Variable* VariableManager::divideVariables(Variable *mainVar, Variable *suppVar)
 	}
 	return nullptr;
 }
+
+// void VariableManager::setVariableNewValue(Variable* target, Variable* data) {
+
+// }

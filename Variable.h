@@ -32,4 +32,7 @@ public:
 	void setName(string name) { this->vName = name; }
 	string getName() { return this->vName; }
 	variableType getType() { return type; }
+	
+	// void resetVariable();
+	Variable* operator=(Variable* newValue);
 };

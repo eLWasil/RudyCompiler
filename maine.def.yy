@@ -56,6 +56,7 @@ read_all:
 line: 
 	ignore 			{ cout << endl; }
 	| op_set		{}
+	| op_hset		{}
 	| identity		{}
 	| print 		{}
 	| line endl		{}
@@ -81,6 +82,115 @@ print:
 	| print '+' 			{}
 	| print ')' 		 	{
 		cout << endl;
+	}
+	;
+
+op_hset:
+	identity op_assign identity	{
+		string suppVal = stackString.top(); 
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		Variable* suppVar = vm[suppVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else if (suppVar == nullptr) {
+			cout << "Could not find variable named [" << suppVal << "]";
+		}
+		else {
+			*mainVar = suppVar;
+		}
+	}
+	|
+	identity op_assign quoteEnd	{
+		string sValue = stackString.top();
+		stackString.pop();
+		string mainVal = stackString.top();
+		stackString.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable* suppVar = new Variable(sValue, "temp");
+			*mainVar = suppVar;
+		}
+	}
+	|
+	identity op_assign integer	{
+		string mainVal = stackString.top();
+		stackString.pop();
+		int iValue = stackInt.top();
+		stackInt.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable* suppVar = new Variable(iValue, "temp");
+			*mainVar = suppVar;
+		}
+	}
+	|
+	identity op_assign double	{
+		string mainVal = stackString.top();
+		stackString.pop();
+		double dValue = stackDouble.top();
+		stackDouble.pop();
+
+		Variable* mainVar = vm[mainVal];
+		if (mainVar == nullptr) {
+			cout << "Could not find variable named [" << mainVal << "]";
+		}
+		else {
+			Variable* suppVar = new Variable(dValue, "temp");
+			*mainVar = suppVar;
+		}
+	}
+	| identity op_assign op_add {
+		if (stackVariables.top() != nullptr) {
+			string mainVal = stackString.top();
+
+			Variable* mainVar = vm[mainVal];
+			*mainVar = stackVariables.top();
+		}
+		stackVariables.pop();
+		stackString.pop();
+	}
+	| identity op_assign op_sub {
+		if (stackVariables.top() != nullptr) {
+			string mainVal = stackString.top();
+
+			Variable* mainVar = vm[mainVal];
+			*mainVar = stackVariables.top();
+		}
+		stackVariables.pop();
+		stackString.pop();
+	}
+	| identity op_assign op_multi {
+		if (stackVariables.top() != nullptr) {
+			string mainVal = stackString.top();
+
+			Variable* mainVar = vm[mainVal];
+			*mainVar = stackVariables.top();
+		}
+		stackVariables.pop();
+		stackString.pop();
+	}
+	| identity op_assign op_div {
+		if (stackVariables.top() != nullptr) {
+			string mainVal = stackString.top();
+
+			Variable* mainVar = vm[mainVal];
+			*mainVar = stackVariables.top();
+		}
+		stackVariables.pop();
+		stackString.pop();
 	}
 	;
 
@@ -888,13 +998,21 @@ quote:
 	'"' STR {
 		stackString.push(yytext);
 	}
+	| quote STR {
+		string quoteVal = stackString.top();
+		stackString.pop();
+		string strVal = yytext;
+		stackString.pop();
+		quoteVal += strVal;
+		stackString.push(quoteVal);
+	}
 	| quote '=' {
 		string quoteVal = stackString.top();
 		stackString.pop();
 		quoteVal += "=";
 		stackString.push(quoteVal);
 	}
-	| quote whitespace {
+	| quote ' ' {
 		string quoteVal = stackString.top();
 		stackString.pop();
 		quoteVal += " ";
