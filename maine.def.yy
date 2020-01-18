@@ -396,7 +396,7 @@ op_div:
 		stackDouble.pop();
 		stackVariables.push(vm.divideVariables(suppVar1, suppVar2));
 	}
-	| quote op_div identity {
+	| quoteEnd op_div identity {
 		string varName = stackString.top();
 		stackString.pop();
 		string stringValue = stackString.top();
@@ -411,21 +411,21 @@ op_div:
 			stackVariables.push(vm.divideVariables(suppVar, mainVar));
 		}
 	}
-	| quote op_div integer {
+	| quoteEnd op_div integer {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
 		stackInt.pop();
 		stackVariables.push(vm.divideVariables(suppVar1, suppVar2));
 	}
-	| quote op_div quoteEnd {
+	| quoteEnd op_div quoteEnd {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		stackVariables.push(vm.divideVariables(suppVar1, suppVar2));
 	}
-	| quote op_div double {
+	| quoteEnd op_div double {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
@@ -569,7 +569,7 @@ op_multi:
 		stackDouble.pop();
 		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
 	}
-	| quote op_multi identity {
+	| quoteEnd op_multi identity {
 		string varName = stackString.top();
 		stackString.pop();
 		string stringValue = stackString.top();
@@ -584,21 +584,21 @@ op_multi:
 			stackVariables.push(vm.multipleVariables(suppVar, mainVar));
 		}
 	}
-	| quote op_multi integer {
+	| quoteEnd op_multi integer {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
 		stackInt.pop();
 		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
 	}
-	| quote op_multi quoteEnd {
+	| quoteEnd op_multi quoteEnd {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		stackVariables.push(vm.multipleVariables(suppVar1, suppVar2));
 	}
-	| quote op_multi double {
+	| quoteEnd op_multi double {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
@@ -740,7 +740,7 @@ op_sub:
 		stackDouble.pop();
 		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
 	}
-	| quote op_sub identity {
+	| quoteEnd op_sub identity {
 		string varName = stackString.top();
 		stackString.pop();
 		string stringValue = stackString.top();
@@ -755,21 +755,21 @@ op_sub:
 			stackVariables.push(vm.subVariables(suppVar, mainVar));
 		}
 	}
-	| quote op_sub integer {
+	| quoteEnd op_sub integer {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
 		stackInt.pop();
 		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
 	}
-	| quote op_sub quoteEnd {
+	| quoteEnd op_sub quoteEnd {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		stackVariables.push(vm.subVariables(suppVar1, suppVar2));
 	}
-	| quote op_sub double {
+	| quoteEnd op_sub double {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
@@ -848,7 +848,7 @@ op_add:
 			stackVariables.push(vm.addVariables(mainVar, suppVar));
 		}
 	}
-	| identity op_add quote {
+	| identity op_add quoteEnd {
 		string stringValue = stackString.top();
 		stackString.pop();
 		string mainVal = stackString.top();
@@ -897,7 +897,7 @@ op_add:
 		stackInt.pop();
 		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
 	}
-	| integer op_add quote {
+	| integer op_add quoteEnd {
 		Variable *suppVar1 = new Variable(stackInt.top(), "temp");
 		stackInt.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");
@@ -911,7 +911,7 @@ op_add:
 		stackDouble.pop();
 		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
 	}
-	| quote op_add identity {
+	| quoteEnd op_add identity {
 		string varName = stackString.top();
 		stackString.pop();
 		string stringValue = stackString.top();
@@ -926,21 +926,21 @@ op_add:
 			stackVariables.push(vm.addVariables(suppVar, mainVar));
 		}
 	}
-	| quote op_add integer {
+	| quoteEnd op_add integer {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackInt.top(), "temp");
 		stackInt.pop();
 		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
 	}
-	| quote op_add quote {
+	| quoteEnd op_add quoteEnd {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
 	}
-	| quote op_add double {
+	| quoteEnd op_add double {
 		Variable *suppVar1 = new Variable(stackString.top(), "temp");
 		stackString.pop();
 		Variable *suppVar2 = new Variable(stackDouble.top(), "temp");
@@ -968,7 +968,7 @@ op_add:
 		stackInt.pop();
 		stackVariables.push(vm.addVariables(suppVar1, suppVar2));
 	}
-	| double op_add quote {
+	| double op_add quoteEnd {
 		Variable *suppVar1 = new Variable(stackDouble.top(), "temp");
 		stackDouble.pop();
 		Variable *suppVar2 = new Variable(stackString.top(), "temp");

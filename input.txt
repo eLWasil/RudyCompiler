@@ -2,13 +2,103 @@ set a = 666
 set b = 3.14
 set b = 3
 set c = "abc def"
-// CALC
+
+//------------------------------\\
+set d1 = a + b
+set d2 = a + 34
+set d3 = a + "abc"
+set d4 = a + 3.14
+
+set d5 = 3 + b
+set d6 = 3 + 3
+set d7 = 3 + "abc"
+set d8 = 3 + 3.14
+
+set d9 =  "abc" + b
+set d10 = "abc" + 3
+set d11 = "abc" + "abc"
+set d12 = "abc" + 3.14
+
+set d13 = 3.14 + b
+set d14 = 3.14 + 3
+set d15 = 3.14 + "abc"
+set d16 = 3.14 + 3.14
+//------------------------------\\
+
+//------------------------------\\
+set d17 = a - b
+set d18 = a - 34
+set d19 = a - "abc"
+set d20 = a - 3.14
+
+set d21 = 3 - b
+set d22 = 3 - 3
+set d23 = 3 - "abc"
+set d24 = 3 - 3.14
+
+set d25 =  "abc" - b
+set d26 = "abc" - 3
+set d27 = "abc" - "abc"
+set d28 = "abc" - 3.14
+
+set d29 = 3.14 - b
+set d30 = 3.14 - 3
+set d31 = 3.14 - "abc"
+set d32 = 3.14 - 3.14
+//------------------------------\\
+
+//------------------------------\\
+set d33 = a * b
+set d34 = a * 10
+set d35 = a * "abc"
+set d36 = a * 3.01
+
+set d37 = 3 * b
+set d38 = 3 * 3
+set d39 = 3 * "abc"
+set d40 = 3 * 3.01
+
+set d41 =  "abc" * b
+set d42 = "abc" * 3
+set d43 = "abc" * "abc"
+set d44 = "abc" * 3.01
+
+set d45 = 3.01 * b
+set d46 = 3.01 * 100
+set d47 = 3.01 * "abc"
+set d48 = 3.01 * 3.01
+//------------------------------\\
+
+//------------------------------\\
+set d49 = a / b
+set d50 = a / 10
+set d51 = a / "abc"
+set d52 = a / 3.01
+
+set d53 = 3 / b
+set d54 = 3 / 3
+set d55 = 3 / "abc"
+set d56 = 3 / 3.01
+
+set d57 =  "abc" / b
+set d48 = "abc" / 3
+set d59 = "abc" / "abc"
+set d60 = "abc" / 3.01
+
+set d61 = 3.01 / b
+set d62 = 3.01 / 100
+set d63 = 3.01 / "abc"
+set d64 = 3.01 / 3.01
+//------------------------------\\
+
+// HIDDEN SET
 a = a * b
 print("a = " + a);
 b = a * 10
 print("b = " + b);
 b = b + 6
 b = b * 10
+//------------------------------\\
 
 // PRINTS 
 print("a = " + a);
